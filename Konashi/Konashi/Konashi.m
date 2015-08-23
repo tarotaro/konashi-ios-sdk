@@ -124,6 +124,29 @@
 	return KonashiResultSuccess;
 }
 
++ (void)findDevice:(void (^)(NSArray *deviceName))deviceRetBlock
+{
+    NSLog(@"findDevice");
+    if([Konashi shared].activePeripheral && [Konashi shared].activePeripheral.state == CBPeripheralStateConnected){
+        return deviceRetBlock(nil);
+    }
+    
+    [[KNSCentralManager sharedInstance] discover:^(CBPeripheral *peripheral, BOOL *stop) {
+    } completionBlock:^(NSSet *peripherals, BOOL timeout) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (CBPeripheral *p in peripherals) {
+            NSString *name = p.name;
+            [array addObject:name];
+        }
+        deviceRetBlock(array);
+    } timeoutInterval:KonashiFindTimeoutInterval];
+    
+    NSLog(@"findDevice End");
+    
+}
+
+
+
 + (KonashiResult) findWithName:(NSString*)name
 {
 	if([Konashi shared].activePeripheral && [Konashi shared].activePeripheral.state == CBPeripheralStateConnected){

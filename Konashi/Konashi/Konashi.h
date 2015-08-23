@@ -108,6 +108,12 @@
 + (KonashiResult) find;
 
 /**
+ deviceの名前がとれるだけのメソッド、拡張メソッド
+ **/
++ (void)findDevice:(void (^)(NSArray *deviceName))deviceRetBlock;
+
+
+/**
  *  konashiの名前を指定して接続します。
  *	find の場合はkonashiのリストが出現しますが、findWithName を実行した場合はリストが出ずに自動的に接続されます。
  *	名前に関しては、find を実行することによって下から出現するリストでリストアップされる konashi#4-0452 などの文字列です。konashi#*-**** の*部分の数字は、konashiの緑色チップのシール上に記載されている番号と同じです。

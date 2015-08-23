@@ -91,7 +91,10 @@ static KNSCentralManager *c;
 		[peripherals_ removeAllObjects];
 		
 		self.discovering = YES;
-		NSTimer *t = [NSTimer scheduledTimerWithTimeInterval:timeoutInterval target:self selector:@selector(stopDiscover:) userInfo:@{@"callback":[timeoutBlock copy]} repeats:NO];
+        __block NSTimer *t;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            t = [NSTimer scheduledTimerWithTimeInterval:timeoutInterval target:self selector:@selector(stopDiscover:) userInfo:@{@"callback":[timeoutBlock copy]} repeats:NO];
+        });
 
 		static dispatch_once_t onceToken;
 		dispatch_once(&onceToken, ^{
